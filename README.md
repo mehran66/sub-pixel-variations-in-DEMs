@@ -4,10 +4,13 @@ Terrain is modeled on a grid of pixels, assuming that elevation values are const
 The workflow involves several steps. Each resolution DEM is input one at a time. The 3 m benchmark DEM is loaded and a random sample of 5000 points is generated, creating a shapefile containing coordinate positions in UTM meters, and elevations in meters extracted from the 3 m benchmark DEM. At this point, the LIDAR DEM is unloaded, and the shapefile is stored on disk. For each of the test DEMs, a nested loop processes each point for all DEMs and for all interpolation methods, then moves on to the next sampled point. Estimated elevations are added as new attributes in the original shapefile. Within the same nested loop, residuals are calculated for each elevation (each sampled point). Once all sampled elevations have been estimated for all DEMs at all resolutions, the residuals are summarized with RMSE standard deviation of residuals, 95% confidence interval and elevation extrema.<br>
 
 Referenec: Ghandehari M., Buttenfield B.P., Farmer C.J.Q. (2017) Cross-Scale Analysis of Sub-pixel Variations in Digital Elevation Models. In: Peterson M. (eds) Advances in Cartography and GIScience. ICACI 2017. Lecture Notes in Geoinformation and Cartography. Springer, Cham
+<br>
+The code is written in two different ways:<br>
+ArcPy: ArcPy is used as the main python module in this code<br>
+OpenSources: Open source python modules such as numpy, geopandas,and rasterio are used in this version of code.<br>
 
-The code is written in two different ways:
-ArcPy: ArcPy is used as the main python module in this code
-OpenSources: Open source python modules such as numpy, geopandas,and rasterio are used in this version of code.
+![fig1](https://user-images.githubusercontent.com/10367311/43148923-87d2653a-8f23-11e8-9625-3b3cd3105e19.PNG)
+
 
 
 
