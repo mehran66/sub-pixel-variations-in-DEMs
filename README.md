@@ -11,7 +11,7 @@ ArcPy: ArcPy is used as the main python module in this code<br>
 OpenSources: Open source python modules such as numpy, geopandas,and rasterio are used in this version of code.<br>
 
 ![fig1](https://user-images.githubusercontent.com/10367311/43148923-87d2653a-8f23-11e8-9625-3b3cd3105e19.PNG)
-The rigid pixel paradigm and (b) the surface-adjusted paradigm. 
+(a) The rigid pixel paradigm and (b) the surface-adjusted paradigm. 
 
 
 
