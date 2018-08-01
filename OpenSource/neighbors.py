@@ -1,5 +1,6 @@
 import numpy as np
 
+# This function get a 5*5 raster and return the m closest pixel to the point x,y located in the central pixel
 def neibr(rasterBlock_x, rasterBlock_y, rasterBlock_elev, x, y, m):
     '''
     This function create the m closest pixel to the point(x,y)
