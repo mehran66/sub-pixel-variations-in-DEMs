@@ -26,24 +26,24 @@ import inverseDistanecWeighting # IDW interpolation
 
 if __name__ == '__main__':
 
-    # Set the current workspace
+    # Set the current workspace (all of the input DEMs are in this folder)
     os.chdir(r"E:\Surface_adjusted\ICC17\Code\Data\NC_cub_resample2")
 
-    # Results are saved in the following directory
+    # Results are saved in the following directory (This folder includes a shapefile named randomPnts.shp that has all of the random points in the study area)
     output = r"E:\Surface_adjusted\ICC17\Code\Python\OpenSource\Results"
     if os.path.isdir(output) == False:
         print("The output directoru does not exist")
 
-    # Input data (DEMs)
+    # Input data (DEMs): they are in ESRI Grid format
     benchmark = 'dem3m'
     DEMs = ['dem10m', 'dem30m', 'dem100m', 'dem1000m']
     resolutions = [10, 30, 100, 1000]
     
     #Random points: extract the benchmark elevation of each point from 3m lidar
     with rasterio.open(benchmark) as dem3m:
-        samples = gpd.read_file(output + r'\randomPnts.shp') # randomPnts shapefile is imported a geodataframe
+        samples = gpd.read_file(output + r'\randomPnts.shp') # randomPnts shapefile is imported as a geodataframe
         samples['elev3m'] = None # adding a new attribute "elev3m" to the geodataframe
-        for index, row in samples.iterrows():
+        for index, row in samples.iterrows(): # Extract the elevation of each point from benchmark
             X = row['geometry'].x
             Y = row['geometry'].y
             samples.at[index, 'elev3m'] = findValue.extractValue(X,Y,dem3m).astype('float64')
@@ -54,11 +54,11 @@ if __name__ == '__main__':
     # Methods used for calculating surface area
     methods = ['WP', 'WA4', 'Li3', 'BiLi4', 'BiQ9', 'BiC16']
 
-	# Declare vaqriable to keep track of time for each interpolation method
+    # Declare vaqriable to keep track of time for each interpolation method
     for mth in methods:
         globals()['time' + mth] = 0
 
-    #Add new feilds to the the "samples" feature class based on all combinations of resolutions and methods
+    #Add new feilds to the the "samples" geodataframe based on all combinations of resolutions and methods
     fields = []
     for res in resolutions:
         for mth in methods:
@@ -117,12 +117,6 @@ if __name__ == '__main__':
     # calculating the residuals for each interpolation method  (3m DEM - estimated elevation)
     for fld in fields:
         residuals[fld] = samples['elev3m']-samples[fld]
-    #     b = pd.DataFrame(samples[0:1000]['elev3m'])
-    #     a = pd.DataFrame(samples[1000:2000][fld])
-    #     import numpy as np
-    #     a.index = np.arange(0, len(a))
-    #     residuals[fld] = a[fld]-b['elev3m']
-    # residuals.dropna()
 
     samples.to_file(driver = 'ESRI Shapefile', filename = output + r'\samples.shp') # Export estimated eleavtions as a shapefile
     residuals.to_file(driver = 'ESRI Shapefile', filename = output + r'\residuals.shp') # Export estimated residuals as a shapefile
